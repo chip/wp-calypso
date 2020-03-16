@@ -47,15 +47,11 @@ const makeRemoteLoginRequest = ( loginLink: string, requestTimeout = 25000 ) => 
 };
 
 export const remoteLoginUser = ( loginLinks: string[] ) =>
-	( {
-		type: 'REMOTE_LOGIN_USER',
-		loginLinks,
-	} as const );
+	( { type: 'REMOTE_LOGIN_USER', loginLinks } as const );
 
-export const reloadProxy = () =>
-	( {
-		type: 'RELOAD_PROXY',
-	} as const );
+export const reloadProxy = () => ( { type: 'RELOAD_PROXY' } as const );
+
+export const wait = ( ms: number ) => ( { type: 'WAIT', ms } as const );
 
 export const controls = {
 	REMOTE_LOGIN_USER: ( { loginLinks }: ReturnType< typeof remoteLoginUser > ) =>
@@ -68,4 +64,6 @@ export const controls = {
 	RELOAD_PROXY: () => {
 		triggerReloadProxy();
 	},
+	WAIT: ( { ms }: ReturnType< typeof wait > ) =>
+		new Promise( resolve => setTimeout( resolve, ms ) ),
 };
