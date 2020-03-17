@@ -1,7 +1,13 @@
 /**
  * Internal dependencies
  */
-import { CreateSiteParams, NewSiteErrorResponse, NewSiteSuccessResponse } from './types';
+import {
+	CreateSiteParams,
+	NewSiteErrorResponse,
+	NewSiteSuccessResponse,
+	ExistingSiteDetails,
+	ExistingSiteError,
+} from './types';
 import { WpcomClientCredentials } from '../shared-types';
 import { wpcomRequest } from '../wpcom-request-controls';
 
@@ -57,11 +63,25 @@ export function createActions( clientCreds: WpcomClientCredentials ) {
 		}
 	}
 
+	const receiveExistingSite = ( slug: string, response: ExistingSiteDetails | undefined ) => ( {
+		type: 'RECEIVE_EXISTING_SITE' as const,
+		slug,
+		response,
+	} );
+
+	const receiveExistingSiteFailed = ( slug: string, response: ExistingSiteError | undefined ) => ( {
+		type: 'RECEIVE_EXISTING_SITE_FAILED' as const,
+		slug,
+		response,
+	} );
+
 	return {
 		fetchNewSite,
 		receiveNewSite,
 		receiveNewSiteFailed,
 		createSite,
+		receiveExistingSite,
+		receiveExistingSiteFailed,
 	};
 }
 
@@ -71,4 +91,6 @@ export type Action = ReturnType<
 	| ActionCreators[ 'fetchNewSite' ]
 	| ActionCreators[ 'receiveNewSite' ]
 	| ActionCreators[ 'receiveNewSiteFailed' ]
+	| ActionCreators[ 'receiveExistingSite' ]
+	| ActionCreators[ 'receiveExistingSiteFailed' ]
 >;

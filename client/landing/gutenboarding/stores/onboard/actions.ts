@@ -7,7 +7,7 @@ import { dispatch, select } from '@wordpress/data-controls';
 /**
  * Internal dependencies
  */
-import { Design, SiteVertical } from './types';
+import { Design, SiteVertical, LastCreatedSite } from './types';
 import { STORE_KEY as ONBOARD_STORE } from './constants';
 import { SITE_STORE } from '../site';
 
@@ -43,8 +43,9 @@ export const togglePageLayout = ( pageLayout: Template ) => ( {
 	pageLayout,
 } );
 
-export const resetOnboardStore = () => ( {
+export const resetOnboardStore = ( lastCreatedSite?: LastCreatedSite ) => ( {
 	type: 'RESET_ONBOARD_STORE' as const,
+	lastCreatedSite,
 } );
 
 export function* createSite(

@@ -22,3 +22,8 @@ export interface Design {
 	src: string;
 	srcset: string;
 }
+
+export interface LastCreatedSite {
+	slug: string | undefined;
+	createdTimestamp: number;
+}

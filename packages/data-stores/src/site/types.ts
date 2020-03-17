@@ -43,3 +43,17 @@ export interface CreateSiteParams {
 		theme?: string;
 	};
 }
+
+export interface ExistingSiteDetails {
+	ID: number;
+	name: string;
+	description: string;
+	URL: URL;
+}
+
+export interface ExistingSiteError {
+	error: string;
+	message: string;
+}
+
+export type ExistingSiteResponse = ExistingSiteDetails | ExistingSiteError;
