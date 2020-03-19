@@ -1,7 +1,13 @@
 /**
+ * External dependencies
+ */
+import { dispatch } from '@wordpress/data';
+
+/**
  * Internal dependencies
  */
 import { State } from './reducer';
+import { STORE_KEY } from './constants';
 
 export const getState = ( state: State ) => state;
 
@@ -18,5 +24,9 @@ export const isNewSite = ( state: State ) => !! state.newSite.data;
  * @param slug {string}		domain string
  */
 export const getSite = ( state: State, slug: string ) => {
-	return state.existingSite[ slug ];
+	const existingSite = state.existingSite[ slug ];
+	if ( ! existingSite ) {
+		dispatch( STORE_KEY ).invalidateResolution( 'getSite', [ slug ] );
+	}
+	return existingSite;
 };
