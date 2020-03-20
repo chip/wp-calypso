@@ -75,6 +75,10 @@ export function createActions( clientCreds: WpcomClientCredentials ) {
 		response,
 	} );
 
+	const reset = () => ( {
+		type: 'RESET_SITE_STORE' as const,
+	} );
+
 	return {
 		fetchNewSite,
 		receiveNewSite,
@@ -82,15 +86,19 @@ export function createActions( clientCreds: WpcomClientCredentials ) {
 		createSite,
 		receiveExistingSite,
 		receiveExistingSiteFailed,
+		reset,
 	};
 }
 
 type ActionCreators = ReturnType< typeof createActions >;
 
-export type Action = ReturnType<
-	| ActionCreators[ 'fetchNewSite' ]
-	| ActionCreators[ 'receiveNewSite' ]
-	| ActionCreators[ 'receiveNewSiteFailed' ]
-	| ActionCreators[ 'receiveExistingSite' ]
-	| ActionCreators[ 'receiveExistingSiteFailed' ]
->;
+export type Action =
+	| ReturnType<
+			| ActionCreators[ 'fetchNewSite' ]
+			| ActionCreators[ 'receiveNewSite' ]
+			| ActionCreators[ 'receiveNewSiteFailed' ]
+			| ActionCreators[ 'receiveExistingSite' ]
+			| ActionCreators[ 'receiveExistingSiteFailed' ]
+	  >
+	// Type added so we can dispatch actions in tests, but has no runtime cost
+	| { type: 'TEST_ACTION' };

@@ -10,17 +10,22 @@ import { combineReducers } from '@wordpress/data';
 import { NewSiteBlogDetails, NewSiteErrorResponse, ExistingSiteDetails } from './types';
 import { Action } from './actions';
 
-const newSiteData: Reducer< NewSiteBlogDetails | undefined, Action > = ( state, action ) => {
+export const newSiteData: Reducer< NewSiteBlogDetails | undefined, Action > = ( state, action ) => {
 	if ( action.type === 'RECEIVE_NEW_SITE' ) {
 		const { response } = action;
 		return response.blog_details;
 	} else if ( action.type === 'RECEIVE_NEW_SITE_FAILED' ) {
 		return undefined;
+	} else if ( action.type === 'RESET_SITE_STORE' ) {
+		return undefined;
 	}
 	return state;
 };
 
-const newSiteError: Reducer< NewSiteErrorResponse | undefined, Action > = ( state, action ) => {
+export const newSiteError: Reducer< NewSiteErrorResponse | undefined, Action > = (
+	state,
+	action
+) => {
 	switch ( action.type ) {
 		case 'FETCH_NEW_SITE':
 			return undefined;
@@ -34,11 +39,13 @@ const newSiteError: Reducer< NewSiteErrorResponse | undefined, Action > = ( stat
 				name: action.error.name,
 				message: action.error.message,
 			};
+		case 'RESET_SITE_STORE':
+			return undefined;
 	}
 	return state;
 };
 
-const isFetchingSite: Reducer< boolean | undefined, Action > = ( state = false, action ) => {
+export const isFetchingSite: Reducer< boolean | undefined, Action > = ( state = false, action ) => {
 	switch ( action.type ) {
 		case 'FETCH_NEW_SITE':
 			return true;
@@ -46,19 +53,23 @@ const isFetchingSite: Reducer< boolean | undefined, Action > = ( state = false, 
 			return false;
 		case 'RECEIVE_NEW_SITE_FAILED':
 			return false;
+		case 'RESET_SITE_STORE':
+			return false;
 	}
 	return state;
 };
 
-const existingSite: Reducer< { [ key: string ]: ExistingSiteDetails | undefined }, Action > = (
-	state = {},
-	action
-) => {
+export const existingSite: Reducer<
+	{ [ key: string ]: ExistingSiteDetails | undefined },
+	Action
+> = ( state = {}, action ) => {
 	if ( action.type === 'RECEIVE_EXISTING_SITE' ) {
 		return { ...state, [ action.slug ]: action.response };
 	} else if ( action.type === 'RECEIVE_EXISTING_SITE_FAILED' ) {
 		const { [ action.slug ]: slugToBeRemoved, ...remainingState } = state;
 		return { ...remainingState };
+	} else if ( action.type === 'RESET_SITE_STORE' ) {
+		return {};
 	}
 	return state;
 };

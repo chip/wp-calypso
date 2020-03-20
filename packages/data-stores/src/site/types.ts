@@ -48,7 +48,7 @@ export interface ExistingSiteDetails {
 	ID: number;
 	name: string;
 	description: string;
-	URL: URL;
+	URL: string;
 }
 
 export interface ExistingSiteError {
