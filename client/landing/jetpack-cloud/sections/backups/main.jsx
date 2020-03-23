@@ -85,7 +85,7 @@ class BackupsPage extends Component {
 					backupAttempts={ backupAttempts }
 					siteSlug={ siteSlug }
 				/>
-				<MissingCredentialsWarning settingsLink="#" />
+				<MissingCredentialsWarning settingsLink={ `/settings/${ siteSlug }` } />
 				<BackupDelta
 					{ ...{
 						deltas,
