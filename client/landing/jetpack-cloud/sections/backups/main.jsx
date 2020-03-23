@@ -28,6 +28,7 @@ import Filterbar from 'my-sites/activity/filterbar';
 import ActivityCard from '../../components/activity-card';
 import siteSupportsRealtimeBackup from 'state/selectors/site-supports-realtime-backup';
 import Pagination from 'components/pagination';
+import MissingCredentialsWarning from '../../components/missing-credentials';
 
 /**
  * Style dependencies
@@ -84,6 +85,7 @@ class BackupsPage extends Component {
 					backupAttempts={ backupAttempts }
 					siteSlug={ siteSlug }
 				/>
+				<MissingCredentialsWarning settingsLink="#" />
 				<BackupDelta
 					{ ...{
 						deltas,
