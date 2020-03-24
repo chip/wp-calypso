@@ -88,6 +88,7 @@ class BackupsPage extends Component {
 			siteId,
 			siteSlug,
 			isLoadingBackups,
+			oldestDateAvailable,
 		} = this.props;
 		const { selectedDate } = this.state;
 		const selectedDateString = this.TO_REMOVE_getSelectedDateString();
@@ -109,6 +110,7 @@ class BackupsPage extends Component {
 					onDateRangeSelection={ this.onDateRangeSelection }
 					selectedDate={ selectedDate }
 					siteId={ siteId }
+					oldestDateAvailable={ oldestDateAvailable }
 				/>
 
 				<div>{ isLoadingBackups && 'Loading backups...' }</div>
