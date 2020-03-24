@@ -29,6 +29,7 @@ import ActivityCard from '../../components/activity-card';
 import siteSupportsRealtimeBackup from 'state/selectors/site-supports-realtime-backup';
 import Pagination from 'components/pagination';
 import MissingCredentialsWarning from '../../components/missing-credentials';
+import getDoesRewindNeedCredentials from 'state/selectors/get-does-rewind-need-credentials.js';
 
 /**
  * Style dependencies
@@ -63,10 +64,10 @@ class BackupsPage extends Component {
 	renderMain() {
 		const {
 			allowRestore,
+			doesRewindNeedCredentials,
 			hasRealtimeBackups,
 			logs,
 			moment,
-			rewindState,
 			siteId,
 			siteSlug,
 		} = this.props;
@@ -93,7 +94,7 @@ class BackupsPage extends Component {
 					backupAttempts={ backupAttempts }
 					siteSlug={ siteSlug }
 				/>
-				{ 'awaiting_credentials' === rewindState && (
+				{ doesRewindNeedCredentials && (
 					<MissingCredentialsWarning settingsLink={ `/settings/${ siteSlug }` } />
 				) }
 				<BackupDelta
@@ -196,14 +197,15 @@ const mapStateToProps = state => {
 	const logs = siteId && requestActivityLogs( siteId, filter );
 	const rewind = getRewindState( state, siteId );
 	const restoreStatus = rewind.rewind && rewind.rewind.status;
+	const doesRewindNeedCredentials = getDoesRewindNeedCredentials( state, siteId );
 	const allowRestore =
 		'active' === rewind.state && ! ( 'queued' === restoreStatus || 'running' === restoreStatus );
 
 	return {
 		allowRestore,
+		doesRewindNeedCredentials,
 		filter,
 		hasRealtimeBackups: siteSupportsRealtimeBackup( state, siteId ),
-		rewindState: rewind.state,
 		logs: logs?.data ?? [],
 		rewind,
 		siteId,
