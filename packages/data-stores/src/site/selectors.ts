@@ -1,12 +1,8 @@
 /**
- * External dependencies
- */
-import { dispatch } from '@wordpress/data';
-
-/**
  * Internal dependencies
  */
 import { State } from './reducer';
+import { dispatch } from '@wordpress/data';
 import { STORE_KEY } from './constants';
 
 export const getState = ( state: State ) => state;
@@ -18,7 +14,8 @@ export const isNewSite = ( state: State ) => !! state.newSite.data;
 
 /**
  * Get an existing site matched by domain string. This selector has a matching
- * resolver that uses the `slug` parameter to fetch an existing site.
+ * resolver that uses the `slug` parameter to fetch an existing site. If the
+ * existingSite cannot be found, invalidate the resolution cache.
  *
  * @param state {State}		state object
  * @param slug {string}		domain string

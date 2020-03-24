@@ -9,7 +9,7 @@ import { registerStore } from '@wordpress/data';
 import { STORE_KEY } from './constants';
 import reducer, { State } from './reducer';
 import { createActions } from './actions';
-import { createResolvers } from './resolvers';
+import * as resolvers from './resolvers';
 import * as selectors from './selectors';
 import { DispatchFromMap, SelectFromMap } from '../mapped-types';
 import { WpcomClientCredentials } from '../shared-types';
@@ -26,7 +26,7 @@ export function register( clientCreds: WpcomClientCredentials ): typeof STORE_KE
 			actions: createActions( clientCreds ),
 			controls: controls as any,
 			reducer,
-			resolvers: createResolvers( clientCreds ),
+			resolvers,
 			selectors,
 		} );
 	}

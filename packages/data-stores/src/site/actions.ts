@@ -90,7 +90,7 @@ export function createActions( clientCreds: WpcomClientCredentials ) {
 	};
 }
 
-type ActionCreators = ReturnType< typeof createActions >;
+export type ActionCreators = ReturnType< typeof createActions >;
 
 export type Action =
 	| ReturnType<
@@ -99,6 +99,7 @@ export type Action =
 			| ActionCreators[ 'receiveNewSiteFailed' ]
 			| ActionCreators[ 'receiveExistingSite' ]
 			| ActionCreators[ 'receiveExistingSiteFailed' ]
+			| ActionCreators[ 'reset' ]
 	  >
 	// Type added so we can dispatch actions in tests, but has no runtime cost
 	| { type: 'TEST_ACTION' };

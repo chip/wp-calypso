@@ -9,12 +9,15 @@
 /**
  * Internal dependencies
  */
-import { createResolvers } from '../resolvers';
+import { getSite } from '../resolvers';
+import { register } from '../';
 
-const { getSite } = createResolvers( { client_id: '', client_secret: '' } );
+beforeAll( () => {
+	register( { client_id: '', client_secret: '' } );
+} );
 
 describe( 'getSite', () => {
-	it( 'should return a receiveExistingSite action object on success', () => {
+	it( 'should return a receiveExistingSite action object on success', async () => {
 		const slug = 'mytestsite12345.wordpress.com';
 		const apiResponse = {
 			ID: 1,
@@ -32,7 +35,7 @@ describe( 'getSite', () => {
 			} ),
 		} );
 
-		expect( generator.next( apiResponse ).value ).toEqual( {
+		expect( await generator.next( apiResponse ).value ).toEqual( {
 			type: 'RECEIVE_EXISTING_SITE',
 			slug,
 			response: apiResponse,
@@ -41,7 +44,7 @@ describe( 'getSite', () => {
 		expect( generator.next().done ).toBe( true );
 	} );
 
-	it( 'should return a receiveExistingSiteFailed action object on fail', () => {
+	it( 'should return a receiveExistingSiteFailed action object on fail', async () => {
 		const slug = 'mytestsite12345.wordpress.com';
 		const apiResponse = {
 			status: 404,
@@ -58,7 +61,7 @@ describe( 'getSite', () => {
 			} ),
 		} );
 
-		expect( generator.throw( apiResponse ).value ).toEqual( {
+		expect( await generator.throw( apiResponse ).value ).toEqual( {
 			type: 'RECEIVE_EXISTING_SITE_FAILED',
 			slug,
 			response: undefined,
