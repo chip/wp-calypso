@@ -29,6 +29,8 @@ import Filterbar from 'my-sites/activity/filterbar';
 import ActivityCard from '../../components/activity-card';
 import siteSupportsRealtimeBackup from 'state/selectors/site-supports-realtime-backup';
 import Pagination from 'components/pagination';
+import getIsRewindMissingPlan from 'state/selectors/get-is-rewind-missing-plan';
+import BackupUpsell from './components/upsell';
 
 /**
  * Style dependencies
@@ -74,13 +76,7 @@ class BackupsPage extends Component {
 	};
 
 	renderMain() {
-		const { allowRestore, hasRealtimeBackups, logs, moment, siteId, siteSlug } = this.props;
-		const { selectedDate } = this.state;
-		const selectedDateString = this.TO_REMOVE_getSelectedDateString();
-
-		const backupAttempts = getBackupAttemptsForDate( logs, selectedDateString );
-		const deltas = getDailyBackupDeltas( logs, selectedDateString );
-		const realtimeEvents = getEventsInDailyBackup( logs, selectedDateString );
+		const { isRewindMissingPlan, siteId } = this.props;
 
 		return (
 			<Main>
@@ -88,7 +84,26 @@ class BackupsPage extends Component {
 				<SidebarNavigation />
 				<QueryRewindState siteId={ siteId } />
 				<QuerySitePurchases siteId={ siteId } />
+				{ isRewindMissingPlan ? <BackupUpsell /> : this.renderBackupPicker() }
+			</Main>
+		);
+	}
 
+	changePage = pageNumber => {
+		this.props.selectPage( this.props.siteId, pageNumber );
+		window.scrollTo( 0, 0 );
+	};
+
+	renderBackupPicker() {
+		const { allowRestore, hasRealtimeBackups, logs, moment, siteId, siteSlug } = this.props;
+		const { selectedDate } = this.state;
+		const selectedDateString = this.TO_REMOVE_getSelectedDateString();
+
+		const backupAttempts = getBackupAttemptsForDate( logs, selectedDateString );
+		const deltas = getDailyBackupDeltas( logs, selectedDateString );
+		const realtimeEvents = getEventsInDailyBackup( logs, selectedDateString );
+		return (
+			<>
 				<DatePicker
 					onDateChange={ this.onDateChange }
 					onDateRangeSelection={ this.onDateRangeSelection }
@@ -112,14 +127,9 @@ class BackupsPage extends Component {
 						siteSlug,
 					} }
 				/>
-			</Main>
+			</>
 		);
 	}
-
-	changePage = pageNumber => {
-		this.props.selectPage( this.props.siteId, pageNumber );
-		window.scrollTo( 0, 0 );
-	};
 
 	renderActivityLog() {
 		const { allowRestore, filter, logs, moment, siteId } = this.props;
@@ -214,6 +224,7 @@ const mapStateToProps = state => {
 		allowRestore,
 		filter,
 		hasRealtimeBackups: siteSupportsRealtimeBackup( state, siteId ),
+		isRewindMissingPlan: getIsRewindMissingPlan( state, siteId ),
 		logs: logs?.data ?? [],
 		rewind,
 		siteId,
