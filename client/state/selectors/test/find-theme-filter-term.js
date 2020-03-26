@@ -19,8 +19,7 @@ describe( 'findThemeFilterTerm()', () => {
 		const term = findThemeFilterTerm( state, 'blog' );
 		expect( term ).to.deep.equal( {
 			name: 'Blog',
-			description:
-				"Whether you're authoring a personal blog, professional blog, or a business blog — ...",
+			description: "Whether you're authoring a personal blog or a professional blog — ...",
 		} );
 	} );
 

@@ -8,8 +8,7 @@ export const state = {
 				},
 				blog: {
 					name: 'Blog',
-					description:
-						"Whether you're authoring a personal blog, professional blog, or a business blog — ...",
+					description: "Whether you're authoring a personal blog or a professional blog — ...",
 				},
 				business: {
 					name: 'Business',

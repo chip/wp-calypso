@@ -13,7 +13,7 @@ describe( 'getThemeShowcaseDescription()', () => {
 	test( 'should return the vertical description for a known vertical', () => {
 		const description = getThemeShowcaseDescription( state, { vertical: 'blog' } );
 		expect( description ).to.equal(
-			"Whether you're authoring a personal blog, professional blog, or a business blog — ..."
+			"Whether you're authoring a personal blog or a professional blog — ..."
 		);
 	} );
 
